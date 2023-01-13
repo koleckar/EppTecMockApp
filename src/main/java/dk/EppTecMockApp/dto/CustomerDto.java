@@ -1,5 +1,7 @@
 package dk.EppTecMockApp.dto;
 
+import dk.EppTecMockApp.model.Customer;
+import dk.EppTecMockApp.utils.Utils;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -23,6 +25,17 @@ public class CustomerDto {
     @NotNull
     @Pattern(regexp = "^\\d{6}/*\\d{4}$", message = "Format must be YYMMDDXXXX or YYMMDD/XXXX ")
     private String nationalID;
+
+
+    public CustomerDto() {
+    }
+
+    public CustomerDto(Customer customer) {
+        setName(customer.getName());
+        setSurname(customer.getSurname());
+        setNationalID(customer.getNationalID());
+    }
+
 
     public String getName() {
         return name;
@@ -55,6 +68,6 @@ public class CustomerDto {
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", nationalID=" + nationalID +
-                ']';
+                ", age=" + Utils.getAgeFromNationalID(nationalID) + "]";
     }
 }
