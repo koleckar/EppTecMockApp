@@ -6,15 +6,15 @@ import dk.EppTecMockApp.model.CustomerRepository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
 
 
 @WebMvcTest(controllers = RestApiController.class)
@@ -22,7 +22,6 @@ public class RestApiControllerTest {
 
     @Autowired
     private MockMvc mvc;
-
     @MockBean
     private CustomerRepository customerRepository;
 
@@ -51,9 +50,10 @@ public class RestApiControllerTest {
 
         if (customerRepository == null) throw new NullPointerException();
 
-        customerRepository.save(new Customer(new CustomerDto("Pavel", "Novak", validNationalID)));
-        Optional<Customer> retrievedCustomer = customerRepository.getCustomerByNationalID(validNationalID);
-        if (retrievedCustomer.isEmpty()) throw new IllegalStateException();
+        Customer customer = customerRepository.save(
+                new Customer(new CustomerDto("Pavel", "Novak", validNationalID)));
+        if (customer == null) throw new NullPointerException();
+
 
         mvc.perform(MockMvcRequestBuilders.get("/customers?nationalID=" + validNationalID))
                 .andExpect(MockMvcResultMatchers.status().is(200));

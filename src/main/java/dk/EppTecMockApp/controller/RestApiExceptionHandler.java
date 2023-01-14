@@ -53,6 +53,5 @@ public class RestApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(responseBody, headers, status);
     }
 
-    // TODO: trying to add non-unique nationalID.
 
 }
