@@ -41,7 +41,7 @@ public class RestApiExceptionHandler extends ResponseEntityExceptionHandler {
         CustomError customError = new CustomError(
                 HttpStatus.INTERNAL_SERVER_ERROR, message, "error occurred");
         return new ResponseEntity<>(
-                customError, new HttpHeaders(), customError.getStatus());
+                customError, new HttpHeaders(), customError.status());
     }
 
     @Override

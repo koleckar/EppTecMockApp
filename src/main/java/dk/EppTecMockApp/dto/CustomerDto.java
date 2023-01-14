@@ -31,6 +31,12 @@ public class CustomerDto {
     public CustomerDto() {
     }
 
+    public CustomerDto(String name, String surname, String nationalID) {
+        this.name = name;
+        this.surname = surname;
+        this.nationalID = nationalID;
+    }
+
     public CustomerDto(Customer customer) {
         setName(customer.getName());
         setSurname(customer.getSurname());

@@ -56,7 +56,7 @@ public class Customer {
     }
 
     public void setNationalID(String nationalID) {
-        this.nationalID = nationalID.replace("\\", "");
+        this.nationalID = nationalID.replace("/", "");
     }
 
 
