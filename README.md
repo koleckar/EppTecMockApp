@@ -1,25 +1,59 @@
 # EppTecMockApp
 
-Console Java SpringBoot application with rest api using in-memory h2 db
+Console Java SpringBoot application with rest api using in-memory h2 database.
+---------------------------------------------------------------------------------
+
+Console input has 3 options 'add', 'get', 'del'.  
+REST api: at "/customers" offering GET, POST, DELETE.
+
+Console api:
+
+get expects nationalID in format yymmdd/xxxx or yymmddxxxx  
+del expects nationalID in format yymmdd/xxxx or yymmddxxxx  
+add expects name, surname and nationalID in format yymmdd/xxxx or yymmddxxxx  
 
 
-Console input has 3 options 'add', 'get', 'del'. 
-REST api: at "/customers" GET, POST, DELETE
+REST api:  
 
-Following holds for both console and rest apis.
-get/Get() expects nationalID in format yymmdd/xxxx or yymmddxxxx
-del/Delete() expects nationalID in format yymmdd/xxxx or yymmddxxxx
-add/Post() expects name, surname and nationalID in format yymmdd/xxxx or yymmddxxxx
-
-
-tomcat server running on localhost:8080
-
-H2 console at http://localhost:8080/h2-console
-Driver Class: org.h2.Driver
-JDBC URL: jdbc:h2:mem:requestsDB
-User Name: dk
-Password: password
+GET expects nationalID in format yymmdd/xxxx or yymmddxxxx.  
+  Returns customer if found with calculated age from the date of birth and actual time and success/failiure status:  
+200 OK  
+{  
+    "customer": {  
+        "name": "Pavel",  
+        "surname": "Novak",  
+        "nationalID": "9101060010"  
+    },  
+    "age": 32  
+}  
 
 
-issues/TODOs:
+POST expects following fields.  
+{  
+    "name" : "Pavel",  
+    "surname": "Novak",  
+    "nationalID": "910106/0010"  
+}  
+
+  Returns eithers success/failiure msg and status.  
+ 
+ DELETE expects nationalID in format yymmdd/xxxx or yymmddxxxx.  
+ 
+ 1 Successfully deleted Customer[name='Pavel', surname='Novak', nationalID=9101060010]  
+    Returns eithers success/failiure message with deleted customer credentials and status.  
+---------------------------------------------------------------------------------
+
+tomcat server running on localhost:8080  
+
+H2 console at http://localhost:8080/h2-console  
+Driver Class: org.h2.Driver  
+JDBC URL: jdbc:h2:mem:requestsDB  
+User Name: dk  
+Password: password  
+
+---------------------------------------------------------------------------------
+
+issues/TODOs:  
 test not finished
+age calculation span only 100 years
+not handling invalid months and days also not handling czech female nationalID format (mm + 50)
