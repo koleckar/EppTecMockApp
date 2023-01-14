@@ -3,14 +3,14 @@
 Console Java SpringBoot application with rest api using in-memory h2 database.
 ---------------------------------------------------------------------------------
 
-Console input has 3 options 'add', 'get', 'del'.  
+Console input offer 3 options 'add', 'get', 'del' and 'help'.
 REST api: at "/customers" offering GET, POST, DELETE.
 
 Console api:
 
-get expects nationalID in format yymmdd/xxxx or yymmddxxxx  
-del expects nationalID in format yymmdd/xxxx or yymmddxxxx  
-add expects name, surname and nationalID in format yymmdd/xxxx or yymmddxxxx  
+'get' expects nationalID in format yymmdd/xxxx or yymmddxxxx  
+'del' expects nationalID in format yymmdd/xxxx or yymmddxxxx  
+'add' expects name, surname and nationalID in format yymmdd/xxxx or yymmddxxxx  
 
 
 REST api:  
