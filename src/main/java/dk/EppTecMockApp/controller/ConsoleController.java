@@ -71,6 +71,7 @@ public class ConsoleController implements CommandLineRunner {
             isNationalIDValid = isValidCustomerProperty(customerDto, "nationalID");
         }
 
+        //todo: let the non-uniques error handle spring?
         Optional<Customer> retrievedCustomer = customerRepository.getCustomerByNationalID(customerDto.getNationalID());
         if (retrievedCustomer.isEmpty()) {
             customerRepository.save(new Customer(customerDto));
