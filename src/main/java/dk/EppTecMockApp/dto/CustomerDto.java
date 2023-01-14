@@ -1,7 +1,6 @@
 package dk.EppTecMockApp.dto;
 
 import dk.EppTecMockApp.model.Customer;
-import dk.EppTecMockApp.utils.Utils;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,6 +21,8 @@ public class CustomerDto {
             message = "Surname must be between " + MIN_SURNAME_LEN + " and " + MAX_SURNAME_LEN + " characters.")
     @Pattern(regexp = "^\\p{Alpha}+$", message = "Only alpha (non-numeric) characters allowed.")
     private String surname;
+
+    // TODO? have set of valid nationalID patterns.
     @NotNull
     @Pattern(regexp = "^\\d{6}/*\\d{4}$", message = "Format must be YYMMDDXXXX or YYMMDD/XXXX ")
     private String nationalID;
@@ -52,7 +53,6 @@ public class CustomerDto {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
     public String getNationalID() {
         return nationalID;
     }
@@ -67,7 +67,6 @@ public class CustomerDto {
         return "Customer[" +
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", nationalID=" + nationalID +
-                ", age=" + Utils.getAgeFromNationalID(nationalID) + "]";
+                ", nationalID=" + nationalID + "]";
     }
 }

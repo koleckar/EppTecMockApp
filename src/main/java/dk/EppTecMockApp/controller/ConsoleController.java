@@ -1,8 +1,10 @@
-package dk.EppTecMockApp.utils;
+package dk.EppTecMockApp.controller;
 
 import dk.EppTecMockApp.dto.CustomerDto;
 import dk.EppTecMockApp.model.Customer;
 import dk.EppTecMockApp.model.CustomerRepository;
+import dk.EppTecMockApp.utils.Constants;
+import dk.EppTecMockApp.utils.Utils;
 import jakarta.validation.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,20 +15,16 @@ import java.util.Scanner;
 
 
 @Component
-public class MyCommandLineRunner implements CommandLineRunner {
-
+public class ConsoleController implements CommandLineRunner {
     private final Validator validator;
     private final CustomerRepository customerRepository;
-
     static final Scanner sc = new Scanner(System.in);
 
-
-    private MyCommandLineRunner(CustomerRepository customerRepository) {
+    private ConsoleController(CustomerRepository customerRepository) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator(); //validates bean instances
         this.customerRepository = customerRepository;
     }
-
 
     @Override
     public void run(String... args) throws Exception {
@@ -46,7 +44,6 @@ public class MyCommandLineRunner implements CommandLineRunner {
         }
     }
 
-    //TODO: throw exception if the customer exists.
 
     @Validated
     private void addCustomer() {
@@ -83,7 +80,6 @@ public class MyCommandLineRunner implements CommandLineRunner {
                     " NationalIDs have to be unique.");
         }
 
-
     }
 
     private void getCustomer() {
@@ -101,7 +97,10 @@ public class MyCommandLineRunner implements CommandLineRunner {
         if (retrievedCustomer.isEmpty()) {
             System.err.println("No customer found with nationalID=" + customerDto.getNationalID() + " in the database.");
         } else {
-            System.out.println(new CustomerDto(retrievedCustomer.get()));
+            System.out.print(new CustomerDto(retrievedCustomer.get()));
+            int age = Utils.calculateAgeFromNationalID(customerDto.getNationalID());
+            String ageString = age >= 0 ? String.valueOf(age) : "Unknown nationalID format, age could not be calculated.";
+            System.out.println(", age=" + ageString);
         }
 
     }
@@ -126,6 +125,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
         }
 
     }
+
 
     private boolean isValidCustomerProperty(CustomerDto customerDto, String propertyName) {
         var constraintViolations = validator.validateProperty(customerDto, propertyName);
