@@ -7,7 +7,10 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @RestController
@@ -25,16 +28,31 @@ public class RestApiController {
 
 
     @PostMapping
-    public void addCustomer(@RequestBody @Valid CustomerDto customerDto) {
+    public ResponseEntity<String> addCustomer(@RequestBody @Valid CustomerDto customerDto) {
+        LOG.info("POST " + customerDto);
         customerRepository.save(new Customer(customerDto));
+        return ResponseEntity.ok(customerDto + " successfully added.");
     }
 
     @GetMapping
-    public void getCustomerByBirthCertificateNumber(@RequestParam("nationalID") String nationalID) {
+    public CustomerDto getCustomerByBirthCertificateNumber(@RequestParam("nationalID") String nationalID) {
+        LOG.info("POST " + nationalID);
+        return new CustomerDto(
+                customerRepository.getCustomerByNationalID(nationalID).orElse(new Customer()));
     }
 
     @DeleteMapping
-    public void deleteCustomer(@RequestParam("nationalID") String nationalID) {
+    public String deleteCustomer(@RequestParam("nationalID") String nationalID) {
+        Optional<Customer> retrievedCustomer = customerRepository.getCustomerByNationalID(nationalID);
+        if (retrievedCustomer.isPresent()) {
+            Customer customer = retrievedCustomer.get();
+            customerRepository.deleteById(customer.getId());
+            LOG.info("deleted " + new CustomerDto(customer));
+            return "Successfully deleted " + new CustomerDto(customer);
+        } else {
+            LOG.info("failed to delete customer with nationalID" + nationalID);
+            return "Failed to delete Customer with nationalID=" + nationalID;
+        }
     }
 
 }
