@@ -11,12 +11,11 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
+    private final CustomerRepository customerRepository;
+
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
-    private final CustomerRepository customerRepository;
-
 
     public void saveCustomer(CustomerDto customerDto) {
         customerRepository.save(new Customer(customerDto));

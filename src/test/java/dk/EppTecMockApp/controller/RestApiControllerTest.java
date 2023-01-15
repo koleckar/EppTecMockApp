@@ -1,9 +1,8 @@
 package dk.EppTecMockApp.controller;
 
 import dk.EppTecMockApp.dto.CustomerDto;
-import dk.EppTecMockApp.model.Customer;
-import dk.EppTecMockApp.model.CustomerRepository;
 
+import dk.EppTecMockApp.service.CustomerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -23,7 +23,7 @@ public class RestApiControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Test
     @DisplayName("Should return HttpStatusCode=400.")
@@ -46,19 +46,14 @@ public class RestApiControllerTest {
 
     @Test
     public void testGET_ResponseStatus_ValidNationalID() throws Exception {
-        String validNationalID = "9101060010";
+        String validNationalID = "910106/0010";
+        String validNationalIDWithoutSlash = "9101060010";
 
-        if (customerRepository == null) throw new NullPointerException();
-
-        Customer customer = customerRepository.save(
-                new Customer(new CustomerDto("Pavel", "Novak", validNationalID)));
-        if (customer == null) throw new NullPointerException();
-
+        customerService.saveCustomer(new CustomerDto("Pavel", "Novak", validNationalID));
 
         mvc.perform(MockMvcRequestBuilders.get("/customers?nationalID=" + validNationalID))
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        String validNationalIDWithoutSlash = "9101060010";
         mvc.perform(MockMvcRequestBuilders.get("/customers?nationalID=" + validNationalIDWithoutSlash))
                 .andExpect(MockMvcResultMatchers.status().is(200));
     }
