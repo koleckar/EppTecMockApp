@@ -2,7 +2,6 @@ package dk.EppTecMockApp.controller;
 
 import dk.EppTecMockApp.dto.CustomerDto;
 
-import dk.EppTecMockApp.model.CustomerRepository;
 import dk.EppTecMockApp.service.CustomerService;
 import dk.EppTecMockApp.utils.Constants;
 import dk.EppTecMockApp.utils.Utils;
@@ -22,8 +21,7 @@ public class ConsoleController implements CommandLineRunner {
     static final Scanner sc = new Scanner(System.in);
 
 
-    private ConsoleController(CustomerService customerService,
-                              CustomerRepository customerRepository) {
+    private ConsoleController(CustomerService customerService) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator(); //validates bean instances
         this.customerService = customerService;
