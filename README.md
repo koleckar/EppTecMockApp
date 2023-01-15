@@ -6,7 +6,7 @@ Console Java SpringBoot application with rest api using in-memory h2 database.
 - Console input offer 3 commands:'add', 'get', 'del' and 'help'.  
 - REST api: at "/customers" offering GET, POST, DELETE.  
 <div align="Left">
-    <img src="/consoleGUI.png" width="500px" height="500px"</img> 
+    <img src="/images/consoleGUI.png" width="500px" height="500px"</img> 
 </div>
 
 ---------------------------------------------------------------------------------
