@@ -27,7 +27,6 @@ public class ConsoleController implements CommandLineRunner {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator(); //validates bean instances
         this.customerService = customerService;
-        this.customerRepository = customerRepository;
     }
 
     @Override
