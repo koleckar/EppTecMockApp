@@ -3,20 +3,25 @@
 Console Java SpringBoot application with rest api using in-memory h2 database.
 ---------------------------------------------------------------------------------
 
-Console input offer 3 options 'add', 'get', 'del' and 'help'.
-REST api: at "/customers" offering GET, POST, DELETE.
+- Console input offer 3 commands:'add', 'get', 'del' and 'help'.  
+- REST api: at "/customers" offering GET, POST, DELETE.  
+<div align="Left">
+    <img src="/consoleGUI.png" width="500px" height="500px"</img> 
+</div>
 
+---------------------------------------------------------------------------------
 Console api:
 
 'get' expects nationalID in format yymmdd/xxxx or yymmddxxxx  
 'del' expects nationalID in format yymmdd/xxxx or yymmddxxxx  
 'add' expects name, surname and nationalID in format yymmdd/xxxx or yymmddxxxx  
 
-
+---------------------------------------------------------------------------------
 REST api:  
 
 GET expects nationalID in format yymmdd/xxxx or yymmddxxxx.  
   Returns customer if found with calculated age from the date of birth and actual time and success/failiure status:  
+ ```json
 200 OK  
 {  
     "customer": {  
@@ -26,21 +31,29 @@ GET expects nationalID in format yymmdd/xxxx or yymmddxxxx.
     },  
     "age": 32  
 }  
-
+```
+------------------------------------
 
 POST expects following fields.  
+
+```json
 {  
     "name" : "Pavel",  
     "surname": "Novak",  
     "nationalID": "910106/0010"  
 }  
+```
+  Returns eithers success/failiure msg and status. 
 
-  Returns eithers success/failiure msg and status.  
+------------------------------------
  
  DELETE expects nationalID in format yymmdd/xxxx or yymmddxxxx.  
+   Returns eithers success/failiure message with deleted customer credentials and status. 
  
- 1 Successfully deleted Customer[name='Pavel', surname='Novak', nationalID=9101060010]  
-    Returns eithers success/failiure message with deleted customer credentials and status.  
+ ```json
+ Successfully deleted Customer[name='Pavel', surname='Novak', nationalID=9101060010]  
+  ```    
+
 ---------------------------------------------------------------------------------
 
 tomcat server running on localhost:8080  
@@ -54,6 +67,6 @@ Password: password
 ---------------------------------------------------------------------------------
 
 issues/TODOs:  
-test not finished
-age calculation span only 100 years
-not handling invalid months and days also not handling czech female nationalID format (mm + 50)
+- unit and integration tests not finished  
+- age calculation span only 100 years  
+- not handling invalid months and days also not handling czech female nationalID format (mm + 50)  
