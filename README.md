@@ -32,8 +32,10 @@ GET expects nationalID in format yymmdd/xxxx or yymmddxxxx.
     "age": 32  
 }  
 ```
+------------------------------------
 
-POST expects following fields. 
+POST expects following fields.  
+
 ```json
 {  
     "name" : "Pavel",  
@@ -41,15 +43,16 @@ POST expects following fields.
     "nationalID": "910106/0010"  
 }  
 ```
+  Returns eithers success/failiure msg and status. 
 
-  Returns eithers success/failiure msg and status.  
+------------------------------------
  
  DELETE expects nationalID in format yymmdd/xxxx or yymmddxxxx.  
+   Returns eithers success/failiure message with deleted customer credentials and status. 
  
  ```json
  Successfully deleted Customer[name='Pavel', surname='Novak', nationalID=9101060010]  
   ```    
-  Returns eithers success/failiure message with deleted customer credentials and status.  
 
 ---------------------------------------------------------------------------------
 
