@@ -1,8 +1,9 @@
 package dk.EppTecMockApp.controller;
 
 import dk.EppTecMockApp.dto.CustomerDto;
-import dk.EppTecMockApp.model.Customer;
+
 import dk.EppTecMockApp.model.CustomerRepository;
+import dk.EppTecMockApp.service.CustomerService;
 import dk.EppTecMockApp.utils.Constants;
 import dk.EppTecMockApp.utils.Utils;
 import jakarta.validation.*;
@@ -17,12 +18,15 @@ import java.util.Scanner;
 @Component
 public class ConsoleController implements CommandLineRunner {
     private final Validator validator;
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
     static final Scanner sc = new Scanner(System.in);
 
-    private ConsoleController(CustomerRepository customerRepository) {
+
+    private ConsoleController(CustomerService customerService,
+                              CustomerRepository customerRepository) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator(); //validates bean instances
+        this.customerService = customerService;
         this.customerRepository = customerRepository;
     }
 
@@ -72,14 +76,14 @@ public class ConsoleController implements CommandLineRunner {
         }
 
         //todo: let the non-uniques error handle spring?
-        Optional<Customer> retrievedCustomer = customerRepository.getCustomerByNationalID(customerDto.getNationalID());
-        if (retrievedCustomer.isEmpty()) {
-            customerRepository.save(new Customer(customerDto));
-            System.out.println(customerDto + " successfully added.");
-        } else {
-            System.err.println("Customer with nationalID=" + customerDto.getNationalID() + " already exists." +
-                    " NationalIDs have to be unique.");
-        }
+        var retrievedCustomer = customerService.getCustomerByNationalID(customerDto.getNationalID());
+        retrievedCustomer.ifPresentOrElse(
+                existingCustomer -> System.err.println("Customer with nationalID=" + existingCustomer.getNationalID() +
+                        " already exists." + " NationalIDs have to be unique."),
+                () -> {
+                    customerService.saveCustomer(customerDto);
+                    System.out.println(customerDto + " successfully added.");
+                });
 
     }
 
@@ -93,16 +97,18 @@ public class ConsoleController implements CommandLineRunner {
             hasNationalIDValidFormat = isValidCustomerProperty(customerDto, "nationalID");
         }
 
-        Optional<Customer> retrievedCustomer = customerRepository.getCustomerByNationalID(customerDto.getNationalID());
+        Optional<CustomerDto> retrievedCustomer = customerService.getCustomerByNationalID(customerDto.getNationalID());
 
-        if (retrievedCustomer.isEmpty()) {
-            System.err.println("No customer found with nationalID=" + customerDto.getNationalID() + " in the database.");
-        } else {
-            System.out.print(new CustomerDto(retrievedCustomer.get()));
-            int age = Utils.calculateAgeFromNationalID(customerDto.getNationalID());
-            String ageString = age >= 0 ? String.valueOf(age) : "Unknown nationalID format, age could not be calculated.";
-            System.out.println(", age=" + ageString);
-        }
+        retrievedCustomer.ifPresentOrElse(
+                customer -> {
+                    System.out.print(customer);
+                    int age = Utils.calculateAgeFromNationalID(customer.getNationalID());
+                    String ageString = age >= 0 ? String.valueOf(age) : "Unknown nationalID format, age could not be calculated.";
+                    System.out.println(", age=" + ageString);
+                },
+                () -> System.err.println(
+                        "No customer found with nationalID=" + customerDto.getNationalID() + " in the database.")
+        );
 
     }
 
@@ -116,14 +122,13 @@ public class ConsoleController implements CommandLineRunner {
             hasNationalIDValidFormat = isValidCustomerProperty(customerDto, "nationalID");
         }
 
-        Optional<Customer> retrievedCustomer = customerRepository.getCustomerByNationalID(customerDto.getNationalID());
-        if (retrievedCustomer.isEmpty()) {
-            System.err.println("No customer found with nationalID=" + customerDto.getNationalID() + " in the database.");
-        } else {
-            Customer customer = retrievedCustomer.get();
-            customerRepository.deleteById(customer.getId());
-            System.out.println("Successfully deleted customer: " + new CustomerDto(customer));
-        }
+        Optional<CustomerDto> retrievedCustomer = customerService.getCustomerByNationalID(customerDto.getNationalID());
+        retrievedCustomer.ifPresentOrElse(
+                customer -> {
+                    customerService.deleteCustomerByNationalID(customer.getNationalID());
+                    System.out.println("Successfully deleted customer: " + customer);
+                },
+                () -> System.err.println("No customer found with nationalID=" + customerDto.getNationalID() + " in the database."));
 
     }
 

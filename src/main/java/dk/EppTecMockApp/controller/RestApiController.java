@@ -21,9 +21,9 @@ import java.util.Optional;
 public class RestApiController {
 
     private final Logger LOG;
-
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
+
 
     public RestApiController(CustomerRepository customerRepository, CustomerService customerService) {
         LOG = LoggerFactory.getLogger(RestApiController.class);
@@ -31,13 +31,13 @@ public class RestApiController {
         this.customerService = customerService;
     }
 
+
     @PostMapping
     public ResponseEntity<String> addCustomer(@RequestBody @Valid CustomerDto customerDto) {
         customerService.saveCustomer(customerDto);
         logRequest("POST", customerDto);
         return ResponseEntity.ok(customerDto + " successfully added.");
     }
-
     // todo:
     //  nationalID jakarta.validation err not propagating.
     @GetMapping
@@ -69,6 +69,7 @@ public class RestApiController {
                         Map.of("customer", new CustomerDto()),
                         HttpStatusCode.valueOf(400)));
     }
+
 
     private void logRequest(String requestType, Optional<CustomerDto> customer, String nationalID) {
         LOG.info(requestType);
