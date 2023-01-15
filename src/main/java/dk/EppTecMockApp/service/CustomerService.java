@@ -4,6 +4,7 @@ import dk.EppTecMockApp.dto.CustomerDto;
 import dk.EppTecMockApp.model.Customer;
 import dk.EppTecMockApp.model.CustomerRepository;
 import dk.EppTecMockApp.utils.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,11 +12,8 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    private final CustomerRepository customerRepository;
-
-    public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public void saveCustomer(CustomerDto customerDto) {
         customerRepository.save(new Customer(customerDto));

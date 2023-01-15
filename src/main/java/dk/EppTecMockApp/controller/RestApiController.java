@@ -1,12 +1,13 @@
 package dk.EppTecMockApp.controller;
 
 import dk.EppTecMockApp.dto.CustomerDto;
-import dk.EppTecMockApp.model.CustomerRepository;
+
 import dk.EppTecMockApp.service.CustomerService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
@@ -20,17 +21,9 @@ import java.util.Optional;
 @RequestMapping(value = "/customers")
 public class RestApiController {
 
-    private final Logger LOG;
-    private final CustomerRepository customerRepository;
-    private final CustomerService customerService;
-
-
-    public RestApiController(CustomerRepository customerRepository, CustomerService customerService) {
-        LOG = LoggerFactory.getLogger(RestApiController.class);
-        this.customerRepository = customerRepository;
-        this.customerService = customerService;
-    }
-
+    private final Logger LOG = LoggerFactory.getLogger(RestApiController.class);
+    @Autowired
+    private CustomerService customerService;
 
     @PostMapping
     public ResponseEntity<String> addCustomer(@RequestBody @Valid CustomerDto customerDto) {
